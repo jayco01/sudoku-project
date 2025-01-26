@@ -90,6 +90,15 @@ def insert_number(number):
         if modifiable_grid[row][col]:
             grid[row][col] = number
 
+# *** Function to erase numbers ***
+def erase_number():
+    """Erase the number in the selected cell."""
+    if selected_cell:
+        row, col = selected_cell
+        # Allow erasing only in modifiable cells
+        if modifiable_grid[row][col]:
+            grid[row][col] = 0  # Set the cell to empty
+
 # Game loop
 running = True
 while running:
@@ -107,6 +116,9 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.unicode.isdigit() and event.unicode != '0':  # Only accept digits 1-9
                 insert_number(int(event.unicode))
+            # *** Handle Backspace key for erasing ***
+            elif event.key == pygame.K_BACKSPACE:  # Check if Backspace key is pressed
+                erase_number()  # Call erase_number to clear the selected cell
 
 pygame.quit()
 sys.exit()
