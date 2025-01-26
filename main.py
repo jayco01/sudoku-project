@@ -35,6 +35,9 @@ grid = [
     [0, 0, 0, 0, 8, 0, 0, 7, 9]
 ]
 
+# Create a modifiable grid (True for editable cells, False for fixed cells)
+modifiable_grid = [[cell == 0 for cell in row] for row in grid]
+
 # selected cell
 selected_cell = None
 
@@ -55,7 +58,9 @@ def draw_numbers():
         for col in range(GRID_SIZE):
             num = grid[row][col]
             if num != 0:
-                text = FONT.render(str(num), True, BLACK)
+                # Use a different color for fixed vs editable cells
+                color = BLACK if not modifiable_grid[row][col] else BLUE
+                text = FONT.render(str(num), True, color)
                 screen.blit(text, (col * CELL_SIZE + CELL_SIZE // 3, row * CELL_SIZE + CELL_SIZE // 4))
 
 def highlight_cell():
@@ -78,7 +83,8 @@ def insert_number(number):
     """Insert a number into the selected cell."""
     if selected_cell:
         row, col = selected_cell
-        if grid[row][col] == 0:  # Only modify empty cells
+        # Allow changes only to modifiable cells
+        if modifiable_grid[row][col]:
             grid[row][col] = number
 
 # Game loop
