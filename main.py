@@ -44,13 +44,16 @@ selected_cell = None
 # Function to draw the grid
 def draw_grid():
     """Draw the Sudoku grid."""
-    # Draw vertical lines (x-coordinates determine position)
-    for x in range(0, WIDTH, CELL_SIZE):
-        pygame.draw.line(screen, BLACK if x % 3 == 0 else GRAY, (x, 0), (x, HEIGHT), 2 if x % 3 == 0 else 1)
+    # Draw vertical lines
+    for x in range(0, WIDTH + 1, CELL_SIZE):
+        is_subgrid_line = (x // CELL_SIZE) % 3 == 0
+        pygame.draw.line(screen, BLACK if is_subgrid_line else GRAY, (x, 0), (x, HEIGHT), 3 if is_subgrid_line else 1)
     
-    # Draw horizontal lines (y-coordinates determine position)
-    for y in range(0, HEIGHT, CELL_SIZE):
-        pygame.draw.line(screen, BLACK if y % 3 == 0 else GRAY, (0, y), (WIDTH, y), 2 if y % 3 == 0 else 1)
+    # Draw horizontal lines
+    for y in range(0, HEIGHT + 1, CELL_SIZE):
+        is_subgrid_line = (y // CELL_SIZE) % 3 == 0
+        pygame.draw.line(screen, BLACK if is_subgrid_line else GRAY, (0, y), (WIDTH, y), 3 if is_subgrid_line else 1)
+
 
 def draw_numbers():
     """Draw the numbers on the grid."""
