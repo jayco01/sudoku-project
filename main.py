@@ -15,6 +15,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
 BLUE = (173, 216, 230)
+RED = (255,0,0)
 
 # Font
 FONT = pygame.font.Font(None, 36)
@@ -139,6 +140,24 @@ def erase_number():
         if modifiable_grid[row][col]:
             grid[row][col] = 0  # Set the cell to empty
 
+# *** New function: Check if the puzzle is solved ***
+def is_puzzle_solved():
+    """Check if the current grid matches the solution."""
+    for row in range(GRID_SIZE):
+        for col in range(GRID_SIZE):
+            if grid[row][col] != solution[row][col]:  # Compare with the solution
+                return False  # If any cell doesn't match, the puzzle isn't solved
+    return True  # All cells match, puzzle is solved
+
+# *** New function: Display a congratulatory message ***
+def display_message(message):
+    """Display a message on the screen."""
+    text = FONT.render(message, True, RED)
+    text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+    screen.blit(text, text_rect)
+    pygame.display.flip()
+    pygame.time.wait(3000)  # Pause for 3 seconds before exiting
+
 # Game loop
 running = True
 while running:
@@ -156,6 +175,9 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.unicode.isdigit() and event.unicode != '0':  # Only accept digits 1-9
                 insert_number(int(event.unicode))
+                if is_puzzle_solved():  # Check if the puzzle is solved
+                    display_message("Congratulations! You solved it!")
+                    running = False  # End the game loop
             elif event.key == pygame.K_BACKSPACE:  # Handle Backspace key
                 erase_number()
 
